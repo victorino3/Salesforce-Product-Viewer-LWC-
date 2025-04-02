@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_in</fullName>
+    <columns>NAME</columns>
+    <columns>Health_Status__c</columns>
+    <columns>Mobile__c</columns>
+    <columns>OBJECT_ID</columns>
+    <columns>Status_Update_Date__c</columns>
+    <columns>Token__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>All in</label>
+</ListView>

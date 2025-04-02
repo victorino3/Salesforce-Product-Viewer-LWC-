@@ -1,0 +1,106 @@
+<template>
+    <lightning-card title="Product Viewer" icon-name="standard:product">
+        <div class="slds-p-around_medium">
+            <!-- Loading State - Must be outside any conditional templates -->
+            <div class="slds-align_absolute-center" if:true={isLoading}>
+                <lightning-spinner 
+                    alternative-text="Loading" 
+                    size="medium"
+                    data-testid="loading-spinner">
+                </lightning-spinner>
+            </div>
+            <!-- Main Content (only shows when not loading) -->
+            <template if:false={isLoading}>
+                <!-- Filters Section -->
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-input
+                            type="text"
+                            label="Search"
+                            value={searchTerm}
+                            onchange={handleSearchChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-combobox
+                            name="category"
+                            label="Category"
+                            value={selectedCategory}
+                            options={categoryOptions}
+                            onchange={handleCategoryChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-combobox
+                            name="brand"
+                            label="Brand"
+                            value={selectedBrand}
+                            options={brandOptions}
+                            onchange={handleBrandChange}
+                        ></lightning-combobox>
+                    </div>
+                </div>
+
+                <!-- Controls Section -->
+                <div class="slds-m-top_medium slds-grid slds-grid_align-spread">
+                    <div>
+                        <lightning-button
+                            label="Refresh from API"
+                            icon-name="utility:refresh"
+                            onclick={handleRefresh}
+                        ></lightning-button>
+                    </div>
+                    <div class="slds-text-heading_small">
+                        Total Stock: {totalStock}
+                    </div>
+                </div>
+
+                <!-- Products Section -->
+                <div class="slds-m-top_medium">
+                    <!-- Error State -->
+                    <template if:true={products.error}>
+                        <div class="slds-notify slds-notify_alert slds-theme_error">
+                            Error: {errorMessage}
+                        </div>
+                    </template>
+
+                    <!-- Loaded State -->
+                    <template if:true={products.data}>
+                        <!-- Empty State -->
+                        <template if:true={noProductsFound}>
+                            <div class="slds-align_absolute-center slds-m-around_large">
+                                No products found matching your criteria.
+                            </div>
+                        </template>
+
+                        <!-- Products Grid -->
+                        <template if:false={noProductsFound}>
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <template for:each={productsWithFormattedBrand} for:item="product">
+                                    <div key={product.Id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-card slds-p-around_medium" data-testid="product-card">
+                                            <div class="slds-grid slds-gutters">
+                                                <div class="slds-col slds-size_1-of-3">
+                                                    <img src={product.Thumbnail_URL__c} alt={product.Name} class="product-thumbnail"/>
+                                                </div>
+                                                <div class="slds-col slds-size_2-of-3">
+                                                    <h3 class="slds-text-heading_small">{product.Name}</h3>
+                                                    <p class="slds-text-body_small slds-m-top_x-small">
+                                                        <strong>Brand:</strong> {product.formattedBrand}<br/>
+                                                        <strong>Category:</strong> {product.Category__c}<br/>
+                                                        <strong>Price:</strong> ${product.Price__c}<br/>
+                                                        <strong>Stock:</strong> {product.Stock__c}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
