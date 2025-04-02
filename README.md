@@ -45,9 +45,11 @@ A modern Lightning Web Component for displaying and managing product data in Sal
 - Custom API callouts
 - Salesforce Data Model
 
-## 🚀 Installation
+## 🚀 Installation & Access
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/victorino3/salesforce-product-viewer.git
    ```
+
+**Package download link:** [Package](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKB000000Lbmq)  
